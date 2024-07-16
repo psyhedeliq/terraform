@@ -18,6 +18,7 @@
 # terraform plan
 # terraform plan -out myplan (this will save the plan file as myplan)
 # terraform plan -destroy (this will show the changes that will be applied to the state file)
+# terraform -h plan (this will give us more info about the plan command)
 
 # Command to apply the changes:
 # terraform apply
