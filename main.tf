@@ -1,6 +1,8 @@
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-west-2"
+  region     = var.aws_region
+  access_key = var.aws_access_key_id
+  secret_key = var.aws_secret_access_key
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -136,5 +138,16 @@ resource "aws_instance" "web_server" {
   subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
   tags = {
     Name = "Ubuntu EC2 Server"
+  }
+}
+
+resource "aws_instance" "web" {
+  ami                    = "ami-0c55b159cbfafe1f1"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id
+  vpc_security_group_ids = ["sg-0c55b159cbfafe1f1"]
+
+  tags = {
+    "Terraform" = "true"
   }
 }
