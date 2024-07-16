@@ -1,5 +1,6 @@
+# ===============================================================================
 # List of commands to manage terraform:
-# ======================================
+# ===============================================================================
 
 # Command to init the terraform:
 # terraform init
@@ -10,14 +11,14 @@
 # Command to list the resources in the state file (a list of resources that is currenty managed by terraform):
 # terraform state list
 
-# Command to validate the terraform:
+# Command to validate the terraform (syntanctialy valid and is internally consistent):
 # terraform validate
 
 # Command to plan the changes:
 # terraform plan
 
 # Command to apply the changes:
-# terraform apply -auto-approve
+# terraform apply || terraform apply -auto-approve
 
 # Command to destroy the changes:
-# terraform destroy -auto-approve
+# terraform destro || terraform destroy -auto-approve
