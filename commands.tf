@@ -16,9 +16,15 @@
 
 # Command to plan the changes:
 # terraform plan
+# terraform plan -out myplan (this will save the plan file as myplan)
+# terraform plan -destroy (this will show the changes that will be applied to the state file)
 
 # Command to apply the changes:
-# terraform apply || terraform apply -auto-approve
+# terraform apply
+# terraform apply -auto-approve
+# terraform apply myplan (this will apply the plan file myplan)
 
 # Command to destroy the changes:
-# terraform destro || terraform destroy -auto-approve
+# terraform destroy
+# terraform destroy -auto-approve
+# terraform destroy myplan (this will destroy the plan file myplan)
