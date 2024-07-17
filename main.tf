@@ -3,13 +3,20 @@ provider "aws" {
   region     = var.aws_region
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
-  # profile = var.aws_profile (you can also do this to set different credentials for different providers)
+  # profile = var.aws_profile (you can also do this to set different credentials for different providers) - this is preferable!
   # shared_credentials_file = "~/.aws/credentials" (you can also do this to set different credentials for different providers)
 }
 
 #Retrieve the list of AZs in the current AWS region
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
+
+# Define local variables - give you the option to reuse expressions or values throughout your terraform configuration
+locals {
+  team        = "api_mgmt_dev"
+  application = "open_api"
+  server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
+}
 
 #Define the VPC 
 resource "aws_vpc" "vpc" {
@@ -135,12 +142,14 @@ data "aws_ami" "ubuntu" {
 }
 
 # Terraform Resource Block - To Build EC2 instance in Public Subnet
-resource "aws_instance" "web_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
+resource "aws_instance" "web_server" {                            # BLOCK
+  ami           = data.aws_ami.ubuntu.id                          # Argument with data expression
+  instance_type = "t2.micro"                                      # Argument with string literal
+  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id # Argument with value expression
   tags = {
-    Name = "Ubuntu EC2 Server"
+    Name  = local.server_name
+    Owner = local.team
+    App   = local.application
   }
 }
 
