@@ -1,6 +1,12 @@
+variable "aws_profile" {
+  description = "The AWS profile to use from the shared credentials file"
+  type        = string
+  default     = "default" # or any other profile name you want to use
+}
+
 variable "aws_region" {
   type    = string
-  default = "us-east-1"
+  default = "eu-west-2"
 }
 
 variable "aws_access_key_id" {
