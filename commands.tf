@@ -2,6 +2,9 @@
 # List of commands to manage terraform:
 # ===============================================================================
 
+# Command to show the version of terraform and wich providers are being used:
+# terraform -v
+
 # Command to init the terraform:
 # terraform init
 
@@ -29,3 +32,6 @@
 # terraform destroy
 # terraform destroy -auto-approve
 # terraform destroy myplan (this will destroy the plan file myplan)
+
+# Command to show which providers are being used and required by our configuration:
+# terraform providers
