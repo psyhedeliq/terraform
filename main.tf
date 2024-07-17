@@ -3,6 +3,8 @@ provider "aws" {
   region     = var.aws_region
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
+  # profile = var.aws_profile (you can also do this to set different credentials for different providers)
+  # shared_credentials_file = "~/.aws/credentials" (you can also do this to set different credentials for different providers)
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -67,8 +69,8 @@ resource "aws_route_table" "private_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    # gateway_id     = aws_internet_gateway.internet_gateway.id
-    nat_gateway_id = aws_nat_gateway.nat_gateway.id
+    gateway_id = aws_internet_gateway.internet_gateway.id
+    # nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
   tags = {
     Name      = "demo_private_rtb"
@@ -132,6 +134,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
+# Terraform Resource Block - To Build EC2 instance in Public Subnet
 resource "aws_instance" "web_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -141,6 +144,7 @@ resource "aws_instance" "web_server" {
   }
 }
 
+# Terraform Resource Block - To Build EC2 instance in Public Subnet
 resource "aws_instance" "web" {
   ami                    = "ami-0c55b159cbfafe1f1"
   instance_type          = "t2.micro"
@@ -150,4 +154,45 @@ resource "aws_instance" "web" {
   tags = {
     "Terraform" = "true"
   }
+}
+
+# Terraform Resource Block - To Build S3 Bucket
+resource "aws_s3_bucket" "my-new-S3-bucket" {
+  bucket = "my-new-tf-test-bucket-${random_id.random-provider.hex}"
+
+  tags = {
+    Name    = "My S3 Bucket"
+    Purpose = "Intro to Resource Blocks Lab"
+  }
+}
+
+# Terraform Resource Block - To Set S3 Bucket ACL
+resource "aws_s3_bucket_acl" "my_new_bucket_acl" {
+  bucket = aws_s3_bucket.my-new-S3-bucket.id # Refer to the S3 bucket created in the previous line
+  acl    = "private"
+}
+
+# Terraform Resource Block - To Create Security Group
+resource "aws_security_group" "my-new-security-group" {
+  name        = "web_server_inbound"
+  description = "Allow inbound traffic on tcp/443"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description = "Allow 443 from the Internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name    = "web_server_inbound"
+    Purpose = "Intro to Resource Blocks Lab"
+  }
+}
+
+# Terraform Resource Block - To Add Random Provider
+resource "random_id" "random-provider" {
+  byte_length = 16
 }
