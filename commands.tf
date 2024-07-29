@@ -7,6 +7,7 @@
 
 # Command to init the terraform:
 # terraform init
+# terraform init -upgrade // This will upgrade the terraform to the latest version
 
 # Command to show the state of our resources that were deployed to AWS:
 # terraform show
