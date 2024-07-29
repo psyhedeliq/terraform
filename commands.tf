@@ -33,5 +33,11 @@
 # terraform destroy -auto-approve
 # terraform destroy myplan (this will destroy the plan file myplan)
 
+# Command to show the output of the terraform in json format:
+# terraform output -json
+
+# Command to show the output of the terraform in human readable format, so you can read your outputs:
+# terraform output
+
 # Command to show which providers are being used and required by our configuration:
 # terraform providers
